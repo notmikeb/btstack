@@ -56,6 +56,8 @@
 #include <string.h>
 
 #include "btstack.h"
+
+#include "gap_init.h"
  
 #define MAX_DEVICES 20
 enum DEVICE_STATE { REMOTE_NAME_REQUEST, REMOTE_NAME_INQUIRED, REMOTE_NAME_FETCHED };
@@ -86,9 +88,10 @@ static int getDeviceIndexForAddress( bd_addr_t addr){
     return -1;
 }
 
-static void start_scan(void){
+int start_scan(void){
     printf("Starting inquiry scan..\n");
     gap_inquiry_start(INQUIRY_INTERVAL);
+    return 1;
 }
 
 static int has_more_remote_name_requests(void){
@@ -236,6 +239,11 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
  * Section on [GAP](../profiles/#sec:GAPdiscoverRemoteDevices).
  */
 
+int btstack_init(void){
+    printf("btstack_init start \n");
+    return 0;
+}
+ 
 
 /* @section Main Application Setup
  *
@@ -244,17 +252,17 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
  */
 
 /* LISTING_START(MainConfiguration): Setup packet handler for GAP inquiry */
-int btstack_main(int argc, const char * argv[]);
-int btstack_main(int argc, const char * argv[]) {
-    (void)argc;
-    (void)argv;
-    printf("btstack_enable start \n");
+int btstack_main(int choose);
+int btstack_main(int choose) {
+    printf("btstack_enable start choose:%d\n", choose);
+    choose =2;
+    
     hci_event_callback_registration.callback = &packet_handler;
     hci_add_event_handler(&hci_event_callback_registration);
-    printf("btstack_enable eir \n");
+
     // enabled EIR
     hci_set_inquiry_mode(INQUIRY_MODE_RSSI_AND_EIR);
-    printf("btstack_enable on \n");
+
     // turn on!
     hci_power_control(HCI_POWER_ON);
         

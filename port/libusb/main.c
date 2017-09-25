@@ -62,7 +62,7 @@
 #include "hci_dump.h"
 #include "btstack_stdin.h"
 
-int btstack_main(int argc, const char * argv[]);
+int btstack_main(int choose);
 
 static btstack_packet_callback_registration_t hci_event_callback_registration;
 
@@ -99,6 +99,7 @@ void hal_led_toggle(void){
 
 
 #define USB_MAX_PATH_LEN 7
+
 int main(int argc, const char * argv[]){
 
     uint8_t usb_path[USB_MAX_PATH_LEN];
@@ -157,7 +158,7 @@ int main(int argc, const char * argv[]){
     signal(SIGINT, sigint_handler);
 
     // setup app
-    btstack_main(argc, argv);
+    btstack_main(argc);
 
     // go
     btstack_run_loop_execute();    

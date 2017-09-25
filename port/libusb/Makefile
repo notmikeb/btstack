@@ -43,5 +43,14 @@ clean_src:
 	rm -rf * ${BTSTACK_ROOT}/src/ble/*.o
 	rm -rf * ${BTSTACK_ROOT}/platform/embedded/*.o
 
-all: ${EXAMPLES}
+all: ${EXAMPLES} libgap_init.a
 
+btstack.a: ${CORE_OBJ} ${COMMON_OBJ} ${CLASSIC_OBJ} 
+	echo ar rcs $@ $^ ${CFLAGS} ${LDFLAGS} 
+	ar rcs $@ $^ 
+
+libgap_init.a: ${CORE_OBJ} ${COMMON_OBJ} ${CLASSIC_OBJ} gap_init.o
+	ar rcs $@ $^ 
+
+gap2: btstack.a gap_inquiry.o
+	${CC} ${CFLAGS} ${LDFLAGS} $^ -o $@
