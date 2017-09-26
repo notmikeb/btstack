@@ -6,6 +6,6 @@ setup(
   name = 'gap_if',
   ext_modules=cythonize([
     Extension("gap_if", ["gap_if.pyx"], libraries = ["gap_init", "usb-1.0"], library_dirs = ["."] ),
-    ]),
+    ], gdb_debug=True),
 )
 

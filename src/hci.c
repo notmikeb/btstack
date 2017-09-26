@@ -2392,10 +2392,8 @@ void hci_init(const hci_transport_t *transport, const void *config){
     if (!hci_stack) {
         hci_stack = (hci_stack_t*) malloc(sizeof(hci_stack_t));
     }
-    *((int *)0) =3;
 #else
     hci_stack = &hci_stack_static;
-    *((int *)0) =4;
 #endif
     memset(hci_stack, 0, sizeof(hci_stack_t));
 
